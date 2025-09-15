@@ -26,7 +26,7 @@ function App() {
           )}
           <div className="form-group">
             <label>Email</label>
-            <input type="email" placeholder="Nhập email" required />
+            <input type="text" placeholder="Nhập email" required />
           </div>
           <div className="form-group">
             <label>Mật khẩu</label>
