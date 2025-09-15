@@ -1,21 +1,17 @@
 services:
   db:
-    image: mysql:8.0 # You can specify a different version if needed
-    container_name: mysql_container
+    image: postgres:16 # Specifies the PostgreSQL image and version
     environment:
-      MYSQL_ROOT_PASSWORD: your_root_password # Replace with a strong password
-      MYSQL_DATABASE: your_database_name # Optional: Create a default database
-      MYSQL_USER: your_user # Optional: Create a default user
-      MYSQL_PASSWORD: your_user_password # Optional: Set password for the default user
-    ports:
-      - "3306:3306" # Maps container port 3306 to host port 3306
+      POSTGRES_USER: khiem # Defines the database user
+      POSTGRES_PASSWORD: 123456 # Defines the password for the user
+      POSTGRES_DB: khiem-db # Defines the default database name
     volumes:
-      - mysql_data:/var/lib/mysql # Persists data using a named volume
+      - postgres_data:/var/lib/postgresql/data # Persists database data
+    ports:
+      - "5432:5432" # Maps host port 5432 to container port 5432
     networks:
       - khiem
     
-
-
   nginx:
     image: nginx:latest
     ports:
@@ -31,3 +27,6 @@ services:
 networks:
   khiem:
     driver: bridge
+
+volumes:
+  postgres_data:
