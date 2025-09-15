@@ -1,15 +1,33 @@
 services:
   db:
-    image: mysql:8.0
+    image: mysql:8.0 # You can specify a different version if needed
+    container_name: mysql_container
     environment:
-      - MYSQL_DATABASE=khiem-mysql
-      - MYSQL_USER=khiem
-      - MYSQL_ROOT_PASSWORD=123456
+      MYSQL_ROOT_PASSWORD: your_root_password # Replace with a strong password
+      MYSQL_DATABASE: your_database_name # Optional: Create a default database
+      MYSQL_USER: your_user # Optional: Create a default user
+      MYSQL_PASSWORD: your_user_password # Optional: Set password for the default user
     ports:
-      - '3307:3306'
+      - "3306:3306" # Maps container port 3306 to host port 3306
     volumes:
-      - db:/var/lib/mysql
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-volumes:
-  db:
-    driver: local
+      - mysql_data:/var/lib/mysql # Persists data using a named volume
+    networks:
+      - khiem
+    
+
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80" # Map host port 8080 to container port 80
+      - "443:443" # Uncomment for HTTPS
+    volumes:
+      - ./nginx:/etc/nginx/conf.d # Mount your Nginx configuration
+    # depends_on:
+      # - frontend # Ensure backend service starts before Nginx
+    networks:
+      - khiem
+
+networks:
+  khiem:
+    driver: bridge
